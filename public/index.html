@@ -7,6 +7,21 @@
 	<link href="style.css" rel="stylesheet" />
 </head>
 <body>
+	<form onsubmit="event.preventDefault(); return false;" id="create-user" class="overlay">
+		Skapa användare
+		<div>
+			<input autofocus type="text" value="" id="user-name" class="text-input" placeholder="Användarnamn" />
+		</div>
+		<input type="submit" value="Skapa" id="btn-create-user" class="btn" />
+	</form>
+	<form onsubmit="event.preventDefault(); return false;" action="#" id="node-editor" class="overlay">
+		Redigera händelsen
+		<div>
+			<input type="text" value="" id="node-name" class="text-input" placeholder="Beskriv kort händelsen" />
+		</div>
+		<div id="author-name"></div>
+		<input type="submit" value="Spara" id="btn-node" class="btn" />
+	</form>
 	<div id="timeline">
 	</div>
 	<script type="text/javascript" src="main.js"></script>

@@ -1,16 +1,21 @@
+(function () {
+// Start capsulating function
+// DOM dymaics
+var userNameElement = document.getElementById('user-name');
+document.getElementById('btn-create-user').onclick = function () {
+	socket.emit('add user', userNameElement.value);
+	var container = document.getElementById('create-user');
+	container.style.display = 'none';
+};
+var nodeNameElement = document.getElementById('node-name');
+
+
+
+
 // Timeline code
 var items = new vis.DataSet({
 	type: { start: 'ISODate', end: 'ISODate' }
 });
-// add items to the DataSet
-items.add([
-	{id: 1, content: 'item 1<br>start', start: '2014-01-23'},
-	{id: 2, content: 'item 2', start: '2018-01-18'},
-	{id: 3, content: 'item 3', start: '2014-01-21'},
-	{id: 4, content: 'item 4', start: '2014-01-19', end: '2014-01-24'},
-	{id: 5, content: 'item 5', start: '2014-01-28', type:'point'},
-	{id: 6, content: 'item 6', start: '2014-01-26'}
-]);
 // Timeline changes event
 items.on('*', function (event, properties) {
 	console.log(event, properties, properties.items.map(item => items.get(item)));
@@ -19,15 +24,30 @@ items.on('*', function (event, properties) {
 		oldItems.forEach(item => socket.emit(event, item));
 	} else {
 		var newItems = properties.items.map(item => items.get(item));
-		newItems.forEach(item => socket.emit(event, item));
+		newItems.forEach(item => {
+			socket.emit(event, item);
+		});
 	}
 });
 
 function updateContent(item, callback) {
-	item.content = prompt('Edit items text:', item.content)
+	// item.content = prompt('Edit items text:', item.content)
 	if (item.content != null && item.content != '') {
-		item.content = item.content.replace(/<\/?[^>]+(>|$)/g, "");
-		callback(item); // send back adjusted item
+		item.content = item.content === 'new item' ? '' : item.content;
+		nodeNameElement.value = item.content;
+		document.getElementById('node-editor').style.display = 'inline-block';
+		document.getElementById('author-name').innerHTML = 'Författare: ' + (item.creatorName && item.creatorName != userNameElement.value ? item.creatorName : 'Du');
+		nodeNameElement.focus();
+		document.getElementById('btn-node').onclick = function () {
+			item.content = nodeNameElement.value.replace(/<\/?[^>]+(>|$)/g, "");
+			if (item.creatorName == undefined) {
+				item.creatorName = userNameElement.value;
+			}
+			if (nodeNameElement.value != '') {
+				document.getElementById('node-editor').style.display = 'none';
+				callback(item); // send back adjusted item
+			}
+		};
 	}
 	else {
 		callback(null); // cancel updating the item
@@ -64,8 +84,10 @@ var timeline = new vis.Timeline(container, items, options);
 var socket = io();
 
 socket.on('add', function (item) {
-		var oldItem = items.get(item.id);
-	if (oldItem) return;
+	var oldItem = items.get(item.id);
+	if (oldItem) {
+		return;
+	}
 	items.add(item);
 });
 socket.on('update', function (newItem) {
@@ -87,3 +109,6 @@ socket.on('reconnect', function () {
 socket.on('reconnect_error', function () {
 	alert('You have been disconnected, refresh the page to reconnect');
 });
+
+// End capsulating function
+})();
