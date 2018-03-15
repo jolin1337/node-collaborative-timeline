@@ -53,7 +53,10 @@ io.on('connection', function(socket) {
 		socket.broadcast.emit('add', item);
 	});
 	socket.on('remove', function (item) {
-		items.remove(item.id);
-		socket.broadcast.emit('remove', item);
+		console.log("Trying to remove item");
+		if (items.remove(item.id)) {
+			socket.broadcast.emit('remove', item);
+			console.log("Removed item");
+		}
 	});
 })
