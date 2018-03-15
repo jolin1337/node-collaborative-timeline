@@ -6,9 +6,9 @@ app.use(express.static('public/'));
 app.use(express.static('node_modules'));
 
 var server = require('http').createServer(app);
-
-server.listen(8080, function (){
-	console.log("Server running on port 8080")
+var port = process.env.PORT || 8080;
+server.listen(port, function (){
+	console.log("Server running on port " + port)
 });
 
 var items = new (function() {
