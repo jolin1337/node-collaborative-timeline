@@ -57,6 +57,7 @@ io.on('connection', function(socket) {
 		if (items.remove(item.id)) {
 			socket.broadcast.emit('remove', item);
 			console.log("Removed item");
+			console.log(items._data);
 		}
 	});
 })
