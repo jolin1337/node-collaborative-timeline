@@ -17,13 +17,13 @@ var items = new (function() {
 		return this._data.find(item => item.id == id);
 	};
 	this.add = function(item) {
+		if (this.get(item.id)) return;
 		this._data.push(item);
 	};
 	this.remove = function (id) {
-		var idx = this._data.findIndex(item => item.id == id);
-		if (idx < 0) return;
-		var item = this._data[idx];
-		this._data.splice(idx, 1);
+		var items = this._data.filter(item => item.id == id);
+		if (items.length == 0) return;
+		items.forEach(item => this._data.splice(this._data.indexOf(item), 1))
 		return item;
 	};
 	this.update = function (new_item) {
@@ -53,11 +53,8 @@ io.on('connection', function(socket) {
 		socket.broadcast.emit('add', item);
 	});
 	socket.on('remove', function (item) {
-		console.log("Trying to remove item");
 		if (items.remove(item.id)) {
 			socket.broadcast.emit('remove', item);
-			console.log("Removed item");
-			console.log(items._data);
 		}
 	});
 })
