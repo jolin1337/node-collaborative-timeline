@@ -1,0 +1,56 @@
+* {
+	font-family: Arial;
+}
+
+#timeline {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.vis-item .vis-item-content {
+	max-width: 300px;
+	white-space: initial;
+}
+.vis-item.vis-box, .vis-item.vis-box.vis-selected {
+	padding: 4px;
+	background-color: #36a70c;
+	color: white;
+	font-weight: 200;
+	border: 0px solid #000;
+	box-shadow: 1px 1px 0.5px rgba(0, 100, 0, 0.2)
+}
+
+.vis-item.vis-box.vis-selected:before {
+	content: '';
+	position: absolute;
+	width: calc(100% + 6px);
+	height: calc(100% + 6px);
+	top: -4px;
+	left: -4px;
+	background: transparent;
+	border: 2px dashed gray;
+}
+
+.vis-item.vis-line {
+	border-left-width: 2px;
+	border-left-style: dashed;
+	border-color: rgba(153, 218, 115, 0.85);
+	background-color: transparent;
+	box-shadow: none;
+}
+
+/* The down-arrow */
+.vis-item:before {
+	content: '';
+	position: absolute;
+	bottom: -5px;
+	left: calc(50% - 5px);
+	width: 0px;
+	height: 0px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid #36a70c;
+}
