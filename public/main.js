@@ -25,7 +25,6 @@ items.on('*', function (event, properties) {
 
 function updateContent(item, callback) {
 	item.content = prompt('Edit items text:', item.content)
-	item.type = 'range';
 	if (item.content != null && item.content != '') {
 		item.content = item.content.replace(/<\/?[^>]+(>|$)/g, "");
 		callback(item); // send back adjusted item
