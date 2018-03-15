@@ -24,7 +24,7 @@ var items = new (function() {
 		var items = this._data.filter(item => item.id == id);
 		if (items.length == 0) return;
 		items.forEach(item => this._data.splice(this._data.indexOf(item), 1))
-		return item;
+		return items[0];
 	};
 	this.update = function (new_item) {
 		var item = this.get(new_item.id);
