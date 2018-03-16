@@ -28,7 +28,7 @@ var items = new (function() {
 	};
 	this.update = function (newItem) {
 		var item = this.get(newItem.id);
-		if (!item || JSON.stringify(item) == JSON.stringify(newItem)) return;
+		if (!item || (item.content == newItem.content && item.start == newItem.start)) return;
 		if (newItem.content != null) item.content = newItem.content;
 		if (newItem.start != null) item.start = newItem.start;
 		// if (new_item.end != null) item.end = new_item.end;
