@@ -19,6 +19,7 @@ var items = new (function() {
 	this.add = function(item) {
 		if (this.get(item.id)) return;
 		this._data.push(item);
+		return item;
 	};
 	this.remove = function (id) {
 		var items = this._data.filter(item => item.id == id);
