@@ -39,6 +39,12 @@ var items = new (function() {
 var io = require('socket.io')(server);
 
 io.on('connection', function(socket) {
+	const createHistory = (history) => {
+		return {
+			text: history,
+			time: new Date().toDateString()
+		}
+	};
 	let addedUser = false;
 	let userName = null;
 
@@ -54,24 +60,26 @@ io.on('connection', function(socket) {
 		if (userName == null) return;
 		item = items.update(item);
 		if (item) {
-			item.history.push(userName + ' updated item')
+			item.history.push(createHistory(userName + ' updated item'));
 			console.log('update', item);
 			socket.broadcast.emit('update', item);
+			socket.emit('update', item);
 		}
 	});
 	socket.on('add', function (item) {
 		if (userName == null) return;
 		item.creatorName = userName;
-		item.history = [userName + ' created item']
+		item.history = [createHistory(userName + ' created item')];
 		console.log('add', item);
 		items.add(item);
 		socket.broadcast.emit('add', item);
+		socket.emit('update', item);
 	});
 	socket.on('remove', function (item) {
 		if (userName == null) return;
 		item = items.remove(item.id);
 		if (item) {
-			item.history.push(userName + ' removed item')
+			item.history.push(createHistory(userName + ' removed item'));
 			console.log('remove', item);
 			socket.broadcast.emit('remove', item);
 		}

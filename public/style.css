@@ -52,7 +52,11 @@
 	color: #aaa;
 	float: left;
 	margin-left: 25%;
-	margin-top: 10px
+	margin-top: 10px;
+	text-align: left;
+}
+#author-name b {
+	color: #ccc;
 }
 
 

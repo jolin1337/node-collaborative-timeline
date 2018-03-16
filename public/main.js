@@ -36,7 +36,12 @@ function updateContent(item, callback) {
 		item.content = item.content === 'new item' ? '' : item.content;
 		nodeNameElement.value = item.content;
 		document.getElementById('node-editor').style.display = 'inline-block';
-		document.getElementById('author-name').innerHTML = 'Författare: ' + (item.creatorName && item.creatorName != userNameElement.value ? item.creatorName : 'Du');
+		var authorName = document.getElementById('author-name');
+		authorName.innerHTML = 'Författare: <b>' + (item.creatorName && item.creatorName != userNameElement.value ? item.creatorName : 'Du') + '</b>';
+		(item.history || []).reverse().forEach((event, index) => {
+			if (index >= 4) return;
+			authorName.innerHTML += '<p><b>' + event.text + '</b>, ' + event.time + '</p>';
+		})
 		nodeNameElement.focus();
 		document.getElementById('btn-node').onclick = function () {
 			item.content = nodeNameElement.value.replace(/<\/?[^>]+(>|$)/g, "");
