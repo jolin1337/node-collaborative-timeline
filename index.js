@@ -70,10 +70,12 @@ io.on('connection', function(socket) {
 		if (userName == null) return;
 		item.creatorName = userName;
 		item.history = [createHistory(userName + ' created item')];
-		console.log('add', item);
-		items.add(item);
-		socket.broadcast.emit('add', item);
-		socket.emit('update', item);
+		item = items.add(item);
+		if (item) {
+			console.log('add', item);
+			socket.broadcast.emit('add', item);
+			socket.emit('update', item);
+    }
 	});
 	socket.on('remove', function (item) {
 		if (userName == null) return;
