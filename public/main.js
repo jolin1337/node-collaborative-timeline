@@ -62,10 +62,10 @@ function updateContent(item, callback) {
 // Options of timeline
 var container = document.getElementById('timeline');
 var options = {
-	start: '2018-02-25',
+	start: '2018-11-01',
 	end: '2018-03-20',
 	min: '2018-01-01',
-	max: '2018-04-16',
+	max: '2018-12-25',
 	height: '100%',
 	// allow selecting multiple items using ctrl+click, shift+click, or hold.
 	multiselect: false,
