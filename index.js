@@ -12,7 +12,7 @@ server.listen(port, function (){
 });
 
 var items = new (function() {
-	this._data = [];
+	this._data = JSON.parse(process.env.INIT_DATA || '[]');
 	this.get = function(id) {
 		return this._data.find(item => item.id == id);
 	};
@@ -76,7 +76,7 @@ io.on('connection', function(socket) {
 			console.log('add', item);
 			socket.broadcast.emit('add', item);
 			socket.emit('update', item);
-    }
+		}
 	});
 	socket.on('remove', function (item) {
 		if (userName == null) return;
