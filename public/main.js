@@ -58,6 +58,11 @@ function updateContent(item, callback) {
 		callback(null); // cancel updating the item
 	}
 }
+document.addEventListener('keyup', function (event) {
+	if (event.keyCode === 27) { // If escape was pressed
+		document.getElementById('node-editor').style.display = 'none';
+	}
+});
 
 // Options of timeline
 var container = document.getElementById('timeline');
@@ -87,7 +92,7 @@ var timeline = new vis.Timeline(container, items, options);
 
 // Socket stuff down below
 var sessionName = location.pathname.split('/').slice(-1)[0];
-var socket = io(`${location.origin}:${location.port}/${sessionName}`);
+var socket = io(`/${sessionName}`);
 
 socket.on('add', function (item) {
 	var oldItem = items.get(item.id);
