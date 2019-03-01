@@ -74,6 +74,23 @@ function makeNewTimeline(io, name, data) {
           socket.broadcast.emit('remove', item);
         }
       });
+      socket.emit('options', {
+        start: process.env.MIN_DATE || new Date(),
+        end: process.env.MAX_DATE || new Date(),
+        min: process.env.MIN_DATE,
+        max: process.env.MAX_DATE,
+        // allow selecting multiple items using ctrl+click, shift+click, or hold.
+        // allow manipulation of items
+        editable: true,
+        /* alternatively, enable/disable individual actions:
+        editable: {
+          add: true,
+          updateTime: true,
+          updateGroup: true,
+          remove: true
+        },
+        */
+      });
     });
   return items;
 }

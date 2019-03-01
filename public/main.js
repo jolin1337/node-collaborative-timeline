@@ -64,35 +64,24 @@ document.addEventListener('keyup', function (event) {
 	}
 });
 
-// Options of timeline
-var container = document.getElementById('timeline');
-var options = {
-	start: '2018-11-01',
-	end: '2018-03-20',
-	min: '2018-01-01',
-	max: '2018-12-25',
-	height: '100%',
-	// allow selecting multiple items using ctrl+click, shift+click, or hold.
-	multiselect: false,
-	// allow manipulation of items
-	editable: true,
-	/* alternatively, enable/disable individual actions:
-	editable: {
-	add: true,
-	updateTime: true,
-	updateGroup: true,
-	remove: true
-	},
-	*/
-	showCurrentTime: true,
-	onUpdate: updateContent,
-	onAdd: updateContent
-};
-var timeline = new vis.Timeline(container, items, options);
-
 // Socket stuff down below
 var sessionName = location.pathname.split('/').slice(-1)[0];
 var socket = io(`/${sessionName}`);
+var timeline;
+socket.on('options', function (socketOptions) {
+	if (timeline !== undefined) return location.reload();
+	// Options of timeline
+	var container = document.getElementById('timeline');
+	var options = Object.assign(socketOptions, {
+		multiselect: false,
+		height: '100%',
+		showCurrentTime: true,
+		onUpdate: updateContent,
+		onAdd: updateContent
+	});
+	var timeline = new vis.Timeline(container, items, options);
+});
+
 
 socket.on('add', function (item) {
 	var oldItem = items.get(item.id);
