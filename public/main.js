@@ -87,7 +87,7 @@ var timeline = new vis.Timeline(container, items, options);
 
 // Socket stuff down below
 var sessionName = location.pathname.split('/').slice(-1)[0];
-var socket = io(`localhost:${location.port}/${sessionName}`);
+var socket = io(`${location.origin}:${location.port}/${sessionName}`);
 
 socket.on('add', function (item) {
 	var oldItem = items.get(item.id);
