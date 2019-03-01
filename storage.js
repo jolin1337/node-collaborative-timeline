@@ -8,8 +8,8 @@ pool.query('CREATE TABLE IF NOT EXISTS timeline (name varchar, data varchar);');
 
 module.exports = {
   save (items) {
-    const clearQuery = 'DELETE FROM timeline WHERE 1=1; ';
-    const baseQuery = 'INSERT INTO timeline (name, data) VALUES ';
+    const clearQuery = 'DELETE FROM timeline WHERE 1=1;';
+    const baseQuery = 'INSERT INTO timeline(name, data) VALUES ';
     const values = [];
     const queries = [];
     Object.keys(items).forEach((key, index) => {
@@ -17,7 +17,12 @@ module.exports = {
       values.push(key);
       values.push(JSON.stringify(items[key]._data));
     });
-    return pool.query(clearQuery + baseQuery + queries.join(','), values)
+    const insertQuery = baseQuery + queries.join(',') + ' RETURNING 1;';
+    console.log(insertQuery);
+    // Note since we are using two different calls to pool here
+    // there is a small window of an empty table
+    return pool.query(clearQuery)
+      .then(() => pool.query(insertQuery, values))
       .catch(err => console.error("Error while saving data", err.stack) );
   },
   load () {
