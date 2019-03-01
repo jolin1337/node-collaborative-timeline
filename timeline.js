@@ -74,9 +74,10 @@ function makeNewTimeline(io, name, data) {
           socket.broadcast.emit('remove', item);
         }
       });
+      const today = new Date();
       socket.emit('options', {
-        start: process.env.MIN_DATE || new Date(),
-        end: process.env.MAX_DATE || new Date(),
+        start: process.env.MIN_DATE || today,
+        end: process.env.MAX_DATE || new Date(new Date().setDate(today.getMonth() + 1)),
         min: process.env.MIN_DATE,
         max: process.env.MAX_DATE,
         // allow selecting multiple items using ctrl+click, shift+click, or hold.

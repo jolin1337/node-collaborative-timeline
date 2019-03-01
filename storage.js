@@ -18,7 +18,7 @@ module.exports = {
       values.push(JSON.stringify(items[key]._data));
     });
     return pool.query(clearQuery + baseQuery + queries.join(','), values)
-      .catch(err => console.error(err.stack) );
+      .catch(err => console.error("Error while saving data", err.stack) );
   },
   load () {
     const items = {};
@@ -29,6 +29,6 @@ module.exports = {
         });
         return items;
       })
-      .catch(err => console.error(err.stack) );
+      .catch(err => console.error("Error while loading data", err.stack) );
   }
 };
