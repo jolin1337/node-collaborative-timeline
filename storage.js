@@ -1,4 +1,4 @@
-const { Item } = require('./timeline');
+const { Items } = require('./timeline');
 const { Pool } = require('pg');
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
@@ -35,7 +35,7 @@ module.exports = {
     return pool.query('SELECT * FROM timeline')
       .then(res => {
         res.rows.forEach(item => {
-          items[item.name] = new Item(JSON.parse(item.data));
+          items[item.name] = new Items(JSON.parse(item.data));
         });
         return items;
       })

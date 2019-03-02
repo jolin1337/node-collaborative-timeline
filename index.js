@@ -4,7 +4,12 @@ const http = require('http');
 const timeline = require('./timeline');
 const app = express();
 const storage = require('./storage');
-const sessionTimelines = storage.load() || {};
+const sessionTimelines = {};
+storage.load().then(items => {
+	Object.keys(items).forEach(name => {
+		sessionTimelines[name] = items[name];
+	})
+});
 
 app.use(express.static('public/'));
 app.use(express.static('node_modules'));
