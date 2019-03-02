@@ -24,4 +24,4 @@ server.listen(port, () => {
 	console.log("Server running on port " + port)
 });
 
-setInterval(() => storage.save(sessionTimelines), 1000 * 60 * 15); // Each 15th minute
+setInterval(() => storage.save(sessionTimelines), 1000 * 60 * 1); // Each 15th minute
