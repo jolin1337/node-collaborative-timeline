@@ -12,13 +12,18 @@ module.exports = {
     const baseQuery = 'INSERT INTO timeline(name, data) VALUES ';
     const values = [];
     const queries = [];
-    Object.keys(items).forEach((key, index) => {
+    const itemKeys = Object.keys(items);
+    if (itemKeys.length === 0) {
+      console.log("No timelines to store");
+      return;
+    }
+    itemKeys.forEach((key, index) => {
       queries.push(`($${index * 2}, $${index * 2 + 1})`);
       values.push(key);
       values.push(JSON.stringify(items[key]._data));
     });
-    const insertQuery = baseQuery + queries.join(',') + ' RETURNING 1;';
-    console.log(insertQuery);
+    const insertQuery = baseQuery + queries.join(',');
+    console.log(items, insertQuery);
     // Note since we are using two different calls to pool here
     // there is a small window of an empty table
     return pool.query(clearQuery)
