@@ -18,7 +18,7 @@ module.exports = {
       return;
     }
     itemKeys.forEach((key, index) => {
-      queries.push(`($${index * 2}, $${index * 2 + 1})`);
+      queries.push(`($${index * 2 + 1}, $${index * 2 + 2})`);
       values.push(key);
       values.push(JSON.stringify(items[key]._data));
     });
