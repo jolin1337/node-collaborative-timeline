@@ -7,9 +7,9 @@ const storage = require('./storage');
 const sessionTimelines = {};
 storage.load().then(items => {
 	Object.keys(items).forEach(name => {
-		sessionTimelines[name] = items[name];
+		sessionTimelines[name] = timeline.makeNewTimeline(io, name, items[name]._data);
 	})
-}).catch(e => console.log("Unable to load from database"));
+}).catch(e => console.log("Unable to load from database", e));
 
 app.use(express.static('public/'));
 app.use(express.static('node_modules'));
