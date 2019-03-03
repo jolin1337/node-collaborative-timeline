@@ -67,6 +67,7 @@ document.addEventListener('keyup', function (event) {
 // Socket stuff down below
 var sessionName = location.pathname.split('/').slice(-1)[0];
 var socket = io(`/${sessionName}`);
+console.log(socket);
 var timeline;
 socket.on('options', function (socketOptions) {
 	if (timeline !== undefined) return location.reload();

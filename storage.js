@@ -4,7 +4,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 });
 
-pool.query('CREATE TABLE IF NOT EXISTS timeline (name varchar, data varchar);');
+pool.query('CREATE TABLE IF NOT EXISTS timeline (name varchar, data varchar);').catch("Unable to setup timeline table");
 
 module.exports = {
   save (items) {
@@ -15,7 +15,7 @@ module.exports = {
     const itemKeys = Object.keys(items);
     if (itemKeys.length === 0) {
       console.log("No timelines to store");
-      return;
+      return Promise.reject();
     }
     itemKeys.forEach((key, index) => {
       queries.push(`($${index * 2 + 1}, $${index * 2 + 2})`);
@@ -28,7 +28,7 @@ module.exports = {
     // there is a small window of an empty table
     return pool.query(clearQuery)
       .then(() => pool.query(insertQuery, values))
-      .catch(err => console.error("Error while saving data", err.stack) );
+      .catch(err => console.error("Error while saving data") );
   },
   load () {
     const items = {};
@@ -39,6 +39,6 @@ module.exports = {
         });
         return items;
       })
-      .catch(err => console.error("Error while loading data", err.stack) );
+      .catch(err => console.error("Error while loading data") );
   }
 };

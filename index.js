@@ -9,7 +9,7 @@ storage.load().then(items => {
 	Object.keys(items).forEach(name => {
 		sessionTimelines[name] = items[name];
 	})
-});
+}).catch(e => console.log("Unable to load from database"));
 
 app.use(express.static('public/'));
 app.use(express.static('node_modules'));
@@ -29,4 +29,4 @@ server.listen(port, () => {
 	console.log("Server running on port " + port)
 });
 
-setInterval(() => storage.save(sessionTimelines), 1000 * 60 * 1); // Each 15th minute
+setInterval(() => storage.save(sessionTimelines).catch(e => console.log("Unable to save to database")), 1000 * 60 * 1); // Each 15th minute
