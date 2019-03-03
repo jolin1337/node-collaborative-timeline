@@ -25,10 +25,8 @@ const Items = function(data) {
 };
 function makeNewTimeline(io, name, data) {
   const items = new Items(data);
-  console.log("aaa")
   io.of('/' + name)
     .on('connection', function(socket) {
-      console.log("hshh")
       const createHistory = (history) => {
         return {
           text: history,

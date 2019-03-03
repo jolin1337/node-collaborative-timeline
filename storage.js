@@ -23,7 +23,6 @@ module.exports = {
       values.push(JSON.stringify(items[key]._data));
     });
     const insertQuery = baseQuery + queries.join(',');
-    console.log(items, insertQuery);
     // Note since we are using two different calls to pool here
     // there is a small window of an empty table
     return pool.query(clearQuery)

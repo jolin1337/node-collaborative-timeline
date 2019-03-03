@@ -29,4 +29,4 @@ server.listen(port, () => {
 	console.log("Server running on port " + port)
 });
 
-setInterval(() => storage.save(sessionTimelines).catch(e => console.log("Unable to save to database")), 1000 * 60 * 1); // Each 15th minute
+setInterval(() => storage.save(sessionTimelines).catch(e => console.log("Unable to save to database")), 1000 * 60 * 15); // Each 15th minute
