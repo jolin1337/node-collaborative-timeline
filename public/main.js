@@ -69,6 +69,8 @@ var sessionName = location.pathname.split('/').slice(-1)[0];
 var socket = io(`/${sessionName}`);
 console.log(socket);
 var timeline;
+var autoResize = true
+var start, end;
 socket.on('options', function (socketOptions) {
 	if (timeline !== undefined) return location.reload();
 	// Options of timeline
@@ -78,9 +80,11 @@ socket.on('options', function (socketOptions) {
 		height: '100%',
 		showCurrentTime: true,
 		onUpdate: updateContent,
-		onAdd: updateContent
+		onAdd: updateContent,
+		autoResize: true
 	});
 	var timeline = new vis.Timeline(container, items, options);
+	setTimeout(() => { autoResize = false }, 5000)
 });
 
 
@@ -89,7 +93,14 @@ socket.on('add', function (item) {
 	if (oldItem) {
 		return;
 	}
+	console.log("Add", item)
 	items.add(item);
+	if (start > item.start) start = new Date(item.start);
+	if (end < item.start) end = new Date(item.start);
+	if (autoResize && timeline) {
+		console.log("Setting window")
+		timeline.setWindow(start, end)
+	}
 });
 socket.on('update', function (newItem) {
 	var item = items.get(newItem.id);
