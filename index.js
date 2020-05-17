@@ -13,6 +13,9 @@ storage.load().then(items => {
 
 app.use(express.static('public/'));
 app.use(express.static('node_modules'));
+app.get('/', (req, res) => {
+	res.end('<a href="/session/guest">Continue to page...</a>')
+});
 app.get('/session/:name', (req, res) => {
 	const sessionName = req.params.name;
 	if (!(sessionName in sessionTimelines)) {
