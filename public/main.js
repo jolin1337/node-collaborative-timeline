@@ -43,7 +43,7 @@ function updateContent(item, callback) {
 			authorName.innerHTML += '<p><b>' + event.text + '</b>, ' + event.time + '</p>';
 		})
 		nodeNameElement.focus();
-		document.getElementById('btn-node').onclick = function () {
+		document.getElementById('save-btn-node').onclick = function () {
 			item.content = nodeNameElement.value.replace(/<\/?[^>]+(>|$)/g, "");
 			if (item.creatorName == undefined) {
 				item.creatorName = userNameElement.value;
@@ -52,6 +52,35 @@ function updateContent(item, callback) {
 				document.getElementById('node-editor').style.display = 'none';
 				callback(item); // send back adjusted item
 			}
+		};
+		document.getElementById('import-btn-node').onchange = function (evt) {
+			var file = evt.target.files[0];
+			var reader = new FileReader();
+
+			// Closure to capture the file information.
+			reader.onload = (function(theFile) {
+				return function(e) {
+					var dates = {};
+					var importedItems = e.target.result.split('\n').map(item => {
+						var itemPart = item.split(' - ', 2);
+						if (itemPart.length < 2) return;
+						var contentPart = itemPart[1].split(': ', 2);
+						if (contentPart < 2) return;
+						var date = itemPart[0].split(' ')[0];
+						if (dates[date] > 4) return;
+						dates[date] = (dates[date] || 0) + 1;
+						return {
+							creatorName: contentPart[0], // userNameElement.value,
+							content: contentPart[1],
+							start: new Date(itemPart[0])
+						}
+					}).filter(line => !!line);
+					console.log("Imported", items.length, "items");
+					items.add(importedItems);
+					callback(null);
+				};
+			})(file);
+			reader.readAsText(file);
 		};
 	}
 	else {
